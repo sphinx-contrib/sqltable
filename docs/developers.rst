@@ -5,7 +5,7 @@
 If you would like to contribute to sphinxcontrib.sqltable directly,
 these instructions should help you get started.  Patches, bug reports,
 and feature requests are all welcome through the `BitBucket site
-<https://bitbucket.org/birkenfeld/sphinx-contrib/>`__.
+<https://bitbucket.org/dhellmann/sphinxcontrib-sqltable/>`__.
 Contributions in the form of patches or pull requests are easier to
 integrate and will receive priority attention.
 
