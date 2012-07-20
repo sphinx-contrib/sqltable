@@ -18,3 +18,4 @@ syntax: glob
 .tox/
 .coverage/
 .*.swp
+docs/*.db
