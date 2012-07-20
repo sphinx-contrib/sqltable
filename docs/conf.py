@@ -11,7 +11,9 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
+import os
+import sqlite3
+import sys
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -244,3 +246,13 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
+
+
+def setup(app):
+    print 'Initializing sample database'
+    if os.path.exists('sampledata.db'):
+        os.unlink('sampledata.db')
+    with sqlite3.connect('sampledata.db') as conn:
+        with open('sampledata.sql', 'rt') as f:
+            schema = f.read()
+        conn.executescript(schema)

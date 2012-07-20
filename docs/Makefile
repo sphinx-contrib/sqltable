@@ -41,15 +41,15 @@ help:
 clean:
 	-rm -rf $(BUILDDIR)/*
 
-html: sampledatabase
+html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
 
-.PHONY: sampledatabase
-sampledatabase:
-	rm -f sampledata.db
-	sqlite3 sampledata.db < sampledata.sql
+# .PHONY: sampledatabase
+# sampledatabase:
+# 	rm -f sampledata.db
+# 	sqlite3 sampledata.db < sampledata.sql
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
