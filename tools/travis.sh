@@ -20,10 +20,5 @@ case "$BUILD" in
         python setup.py sdist;
         twine check dist/*$(python setup.py --version)*;;
     *)
-        python setup.py test \
-               --coverage \
-               --coverage-package-name=sphinxcontrib.datatemplates \
-               --slowest \
-               --testr-args="$@";
-        coverage report --show-missing;;
+        echo "Test job not implemented";;
 esac
