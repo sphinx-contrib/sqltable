@@ -9,7 +9,7 @@ allow authors to embed SQL statements in source documents and produce
 tabular output in rendered documents.
 
 Refer to the `main documentation page
-<http://www.doughellmann.com/docs/sphinxcontrib.sqltable/>`__ for
+<https://sphinxcontrib-sqltable.readthedocs.io/en/latest/>`__ for
 installation and setup details.
 
 License
