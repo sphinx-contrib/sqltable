@@ -15,7 +15,7 @@ used for a single query.
 ::
 
   .. sqltable:: List of Users
-     :connection_string: sqlite:///sampledata.db
+     :connection_string: sqlite:////tmp/sampledata.db
 
      select name as 'Name', email as 'E-mail' from users
      order by Name asc
@@ -23,7 +23,7 @@ used for a single query.
 produces this table:
 
 .. sqltable:: List of Users
-   :connection_string: sqlite:///docs/sampledata.db
+   :connection_string: sqlite:////tmp/sampledata.db
 
    select name as 'Name', email as 'E-mail' from users
    order by Name asc
