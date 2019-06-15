@@ -249,7 +249,10 @@ texinfo_documents = [
 
 
 def setup(app):
-    schema_file = 'docs/sampledata.sql'
+    if os.path.exists('sampledata.sql'):
+        schema_file = 'sampledata.sql'
+    else:
+        schema_file = 'docs/sampledata.sql'
     db_file = '/tmp/sampledata.db'
     print('Initializing sample database {} with {} from {}'.format(
         db_file, schema_file, os.getcwd()))
