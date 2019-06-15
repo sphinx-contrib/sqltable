@@ -144,7 +144,6 @@ class SQLTable(Table):
             rows.append(trow)
         tbody.extend(rows)
 
-        #print table
         return table
 
 
