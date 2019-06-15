@@ -1,11 +1,17 @@
 "SQLTable extension for Sphinx."
 
+import os
+
 from docutils import nodes
 from docutils.parsers.rst.directives.tables import Table
 from docutils.parsers.rst import directives
 from docutils.utils import SystemMessagePropagation
 
+from sphinx.util import logging
+
 import sqlalchemy
+
+LOG = logging.getLogger(__name__)
 
 
 class SQLTable(Table):
@@ -45,12 +51,14 @@ class SQLTable(Table):
 
         # Make sure we can get the specified database.
         try:
-            app.info('Connecting to %s' % connection_string)
+            LOG.info('Connecting to %s', connection_string)
             engine = sqlalchemy.create_engine(connection_string)
         except Exception as err:
             error = self.state_machine.reporter.error(
-                'Could not connect to %s for sqltable' % (
+                'Could not connect to %s for sqltable when in %s: %s' % (
                     connection_string,
+                    os.getcwd(),
+                    err,
                 ),
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno,
@@ -60,7 +68,7 @@ class SQLTable(Table):
         # Run the query
         try:
             query = '\n'.join(self.content)
-            app.info('Running query %r' % query)
+            LOG.info('Running query %r' % query)
             results = engine.execute(query)
         except Exception as err:
             error = self.state_machine.reporter.error(
@@ -141,6 +149,6 @@ class SQLTable(Table):
 
 
 def setup(app):
-    app.info('Initializing SQLTable')
+    LOG.info('Initializing SQLTable')
     app.add_config_value('sqltable_connection_string', '', 'env')
     app.add_directive('sqltable', SQLTable)
