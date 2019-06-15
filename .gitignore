@@ -3,3 +3,4 @@ AUTHORS
 ChangeLog
 dist/
 build/
+.tox/
