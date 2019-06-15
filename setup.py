@@ -1,42 +1,14 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+import setuptools
 
-from setuptools import setup, find_packages
-
-f = open('README', 'r')
+# In python < 2.7.4, a lazy loading of package `pbr` will break
+# setuptools if some other modules registered functions in `atexit`.
+# solution from: http://bugs.python.org/issue15881#msg170215
 try:
-    long_desc = f.read()
-finally:
-    f.close()
+    import multiprocessing  # noqa
+except ImportError:
+    pass
 
-requires = ['Sphinx>=0.6',
-            'SQLAlchemy',
-            ]
-
-setup(
-    name='sphinxcontrib-sqltable',
-    version='1.0',
-    url='https://github.com/sphinx-contrib/sqltable',
-    license='BSD',
-    author='Doug Hellmann',
-    author_email='doug@doughellmann.com',
-    description='Sphinx "SQLTable" extension',
-    long_description=long_desc,
-    zip_safe=False,
-    classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: Console',
-        'Environment :: Web Environment',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: BSD License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Topic :: Database',
-        'Topic :: Documentation',
-        'Topic :: Utilities',
-    ],
-    platforms='any',
-    packages=find_packages(),
-    include_package_data=True,
-    install_requires=requires,
-    namespace_packages=['sphinxcontrib'],
-)
+setuptools.setup(
+    setup_requires=['pbr'],
+    pbr=True)
