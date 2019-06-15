@@ -14,7 +14,7 @@ set -e
 
 case "$BUILD" in
     docs)
-        sphinx-build -b html doc/source doc/build;;
+        sphinx-build -W -b html docs docs/_build;;
     linter)
         flake8 sphinxcontrib setup.py;
         python setup.py sdist;
