@@ -1,20 +1,27 @@
-#!/usr/bin/env python
-"""SQLTable extension for Sphinx.
-"""
+"SQLTable extension for Sphinx."
+
+import os
 
 from docutils import nodes
 from docutils.parsers.rst.directives.tables import Table
 from docutils.parsers.rst import directives
+from docutils.utils import SystemMessagePropagation
+
+from sphinx.util import logging
 
 import sqlalchemy
 
+LOG = logging.getLogger(__name__)
+
+
 class SQLTable(Table):
 
-    option_spec = {'widths': directives.positive_int_list,
-                   'class': directives.class_option,
-                   'name': directives.unchanged,
-                   'connection_string':directives.unchanged,
-                   }
+    option_spec = {
+        'widths': directives.positive_int_list,
+        'class': directives.class_option,
+        'name': directives.unchanged,
+        'connection_string': directives.unchanged,
+    }
 
     def run(self):
         env = self.state.document.settings.env
@@ -36,57 +43,61 @@ class SQLTable(Table):
                                              )
         if not connection_string:
             error = self.state_machine.reporter.error(
-                'No connection_string or sqltable_connection_string was specified for sqltable',
+                'No connection_string or sqltable_connection_string '
+                'was specified for sqltable',
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno)
             return [error]
 
         # Make sure we can get the specified database.
         try:
-            app.info('Connecting to %s' % connection_string)
+            LOG.info('Connecting to %s', connection_string)
             engine = sqlalchemy.create_engine(connection_string)
-        except Exception, err:
+        except Exception as err:
             error = self.state_machine.reporter.error(
-                'Could not connect to %s for sqltable' % (
+                'Could not connect to %s for sqltable when in %s: %s' % (
                     connection_string,
-                    ),
+                    os.getcwd(),
+                    err,
+                ),
                 nodes.literal_block(self.block_text, self.block_text),
-                line=self.lineno)
+                line=self.lineno,
+            )
             return [error]
 
         # Run the query
         try:
             query = '\n'.join(self.content)
-            app.info('Running query %r' % query)
+            LOG.info('Running query %r' % query)
             results = engine.execute(query)
-        except Exception, err:
+        except Exception as err:
             error = self.state_machine.reporter.error(
                 u'Error with query %s for sqltable: %s' % (
                     query,
                     err,
-                    ),
+                ),
                 nodes.literal_block(self.block_text, self.block_text),
-                line=self.lineno)
+                line=self.lineno,
+            )
             return [error]
 
         # Extract some values we need for building the table.
         table_headers = results.keys()
         table_body = results
         max_cols = len(table_headers)
-        max_header_cols = max_cols
 
         # Handle the width settings and title
         try:
             col_widths = self.get_column_widths(max_cols)
             title, messages = self.make_title()
-        except SystemMessagePropagation, detail:
+        except SystemMessagePropagation as detail:
             return [detail.args[0]]
-        except Exception, err:
+        except Exception as err:
             error = self.state_machine.reporter.error(
                 'Error processing sqltable directive:\n%s' % err,
                 nodes.literal_block(self.block_text, self.block_text),
                 line=self.lineno,
-                )
+            )
             return [error]
 
         # Build the node containing the table content
@@ -115,7 +126,7 @@ class SQLTable(Table):
         row_node.extend(
             nodes.entry(h, nodes.paragraph(text=h))
             for h in headers
-            )
+        )
 
         # The body of the table is made up of rows.
         # Each row contains a series of entries,
@@ -127,16 +138,16 @@ class SQLTable(Table):
             trow = nodes.row()
             for cell in row:
                 entry = nodes.entry()
-                para = nodes.paragraph(text=unicode(cell))
+                para = nodes.paragraph(text=str(cell))
                 entry += para
                 trow += entry
             rows.append(trow)
         tbody.extend(rows)
 
-        #print table
         return table
 
+
 def setup(app):
-    app.info('Initializing SQLTable')
+    LOG.info('Initializing SQLTable')
     app.add_config_value('sqltable_connection_string', '', 'env')
     app.add_directive('sqltable', SQLTable)

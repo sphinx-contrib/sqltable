@@ -249,10 +249,13 @@ texinfo_documents = [
 
 
 def setup(app):
-    print 'Initializing sample database'
-    if os.path.exists('sampledata.db'):
-        os.unlink('sampledata.db')
-    with sqlite3.connect('sampledata.db') as conn:
-        with open('sampledata.sql', 'rt') as f:
+    schema_file = 'docs/sampledata.sql'
+    db_file = 'docs/sampledata.db'
+    print('Initializing sample database {} with {} from {}'.format(
+        db_file, schema_file, os.getcwd()))
+    if os.path.exists(db_file):
+        os.unlink(db_file)
+    with sqlite3.connect(db_file) as conn:
+        with open(schema_file, 'rt') as f:
             schema = f.read()
         conn.executescript(schema)
