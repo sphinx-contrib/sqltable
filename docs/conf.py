@@ -11,6 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import importlib
 import os
 import sqlite3
 import sys
@@ -54,7 +55,7 @@ copyright = u'2012, Doug Hellmann'
 # built documents.
 #
 # The short X.Y version.
-version = '1.0'
+version = importlib.metadata.version('sphinxcontrib.sqltable')
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -97,7 +98,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'default'
+html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
