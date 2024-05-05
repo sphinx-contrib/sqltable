@@ -12,11 +12,16 @@ jobs:
     if: ${{ github.repository_owner == 'sphinx-contrib' }}
 
     runs-on: ubuntu-latest
+    environment: release
+
+    permissions:
+      # IMPORTANT: this permission is mandatory for trusted publishing
+      id-token: write
 
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      # with:
+      #   fetch-depth: 0
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
@@ -28,13 +33,6 @@ jobs:
     - name: Build sdist and wheel
       run: |
         python -m build
-    # - name: Publish distribution to Test PyPI
-    #   uses: pypa/gh-action-pypi-publish@master
-    #   with:
-    #     password: ${{ secrets.test_pypi_password }}
-    #     repository_url: https://test.pypi.org/legacy/
     - name: Publish distribution to PyPI
       if: startsWith(github.ref, 'refs/tags')
-      uses: pypa/gh-action-pypi-publish@master
-      with:
-        password: ${{ secrets.pypi_password }}
+      uses: pypa/gh-action-pypi-publish@release/v1
