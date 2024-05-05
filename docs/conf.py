@@ -11,6 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import importlib
 import os
 import sqlite3
 import sys
@@ -54,7 +55,7 @@ copyright = u'2012, Doug Hellmann'
 # built documents.
 #
 # The short X.Y version.
-version = '1.0'
+version = importlib.metadata.version('sphinxcontrib.sqltable')
 # The full version, including alpha/beta/rc tags.
 release = version
 
