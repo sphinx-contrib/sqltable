@@ -51,6 +51,10 @@ build = [
     "build",
     "twine",
 ]
+docs = [
+    "sphinx_rtd_theme",
+    "sphinx",
+]
 
 [tools.setuptools]
 packages = [
