@@ -6,7 +6,8 @@
 =====
 
 - Update SQLAlchemy integration to support (and require) 2.0 or
-  higher. (contributed by [Gabriel Gaona](https://github.com/GabrielGaona)).
+  higher. (contributed by `Gabriel Gaona
+  <https://github.com/GabrielGaona>`__)
 
 2.0.0
 =====
