@@ -71,6 +71,8 @@ class SQLTable(Table):
             LOG.info('Running query %r' % query)
             with engine.connect() as conn:
                 results = conn.execute(sqlalchemy.text(query))
+                table_headers = results.keys()
+                table_body = results.fetchall()
         except Exception as err:
             error = self.state_machine.reporter.error(
                 u'Error with query %s for sqltable: %s' % (
@@ -83,8 +85,6 @@ class SQLTable(Table):
             return [error]
 
         # Extract some values we need for building the table.
-        table_headers = results.keys()
-        table_body = results
         max_cols = len(table_headers)
 
         # Handle the width settings and title
